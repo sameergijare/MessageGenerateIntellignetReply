@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>AI Ticket Console CRM</title>
+    <!-- Tailwind CSS Script -->
+    <script src="https://tailwindcss.com"></script>
+    <!-- htmx Engine Script Core -->
+    <script src="https://unpkg.com"></script>
+
+    <script>
+        // Intercepts htmx requests to automatically inject the Spring Security CSRF token header
+        document.addEventListener("htmx:configRequest", (evt) => {
+            const token = document.cookie.split('; ')
+                .find(row => row.startsWith('XSRF-TOKEN='))
+                ?.split('=')[1];
+            if (token) {
+                evt.detail.headers['X-XSRF-TOKEN'] = decodeURIComponent(token);
+            }
+        });
+    </script>
+</head>
+<body class="bg-slate-950 min-h-screen">
+
+<!-- Application Frame Shell Wrapper -->
+<main class="container mx-auto p-8">
+    <h1 class="text-xl font-bold font-mono text-indigo-400 mb-6">▋ UK SaaS Ticketing Engine</h1>
+
+    <!-- Content Insertion Hook for partial template swaps inside the workspace -->
+    <div id="ticket-workspace-pane">
+        <p class="text-sm text-slate-400">Select an inbound case profile queue to initiate AI evaluation reviews...</p>
+    </div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!-- Location: src/main/resources/templates/dashboard/partials/ticket-detail.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<body>
+
+<!-- Fragment block representing the main working split-screen viewing dashboard panel -->
+<div th:fragment="detail-pane" id="ticket-detail-container" class="p-6 bg-slate-900 text-white rounded-lg shadow-xl">
+    <div class="border-b border-slate-700 pb-4 mb-4">
+        <h2 class="text-2xl font-bold font-mono tracking-tight" th:text="${ticket.subject}">System Connectivity Error</h2>
+        <div class="mt-2 flex gap-4 text-sm">
+            <span class="px-2 py-1 rounded bg-indigo-600 text-xs font-semibold" th:text="${'Category: ' + ticket.aiClassification}">Category: Billing</span>
+            <span class="px-2 py-1 rounded text-xs font-semibold text-slate-200"
+                  th:classappend="${ticket.priority.name() == 'HIGH' ? 'bg-red-600' : 'bg-slate-700'}"
+                  th:text="${'Priority: ' + ticket.priority}">Priority: HIGH</span>
+            <span class="text-emerald-400 font-mono" th:text="${'AI Confidence: ' + #numbers.formatPercent(ticket.aiConfidenceScore, 1, 2)}">AI Confidence: 94.20%</span>
+        </div>
+    </div>
+
+    <!-- Ticket Interaction History Chain View Loop -->
+    <div class="space-y-4 max-h-96 overflow-y-auto mb-6 p-2 bg-slate-950 rounded">
+        <div th:each="msg : ${ticket.messages}" class="p-4 bg-slate-800 rounded border border-slate-700">
+            <p class="text-xs text-slate-400 font-mono mb-1" th:text="${msg.senderEmail + ' • ' + msg.createdAt}">user@domain.uk • Timestamp</p>
+            <p class="text-sm text-slate-100" th:text="${msg.body}">Original input content description block text</p>
+        </div>
+    </div>
+
+    <!-- Isolated AI Draft Management Section Targeted for Component Swapping Updates -->
+    <div th:fragment="draft-status-block" id="ai-draft-workspace" class="border-t-2 border-dashed border-indigo-500/30 pt-4">
+        <div th:if="${latestMessage != null and !latestMessage.isDraftApproved}" class="bg-indigo-950/40 border border-indigo-500/50 p-4 rounded-lg">
+            <div class="flex justify-between items-center mb-3">
+                <h4 class="text-indigo-400 text-xs font-mono font-bold tracking-widest uppercase">AI Copilot Proposed Draft</h4>
+                <span class="text-[11px] text-slate-400">Press Tab + Enter to quickly submit approval changes</span>
+            </div>
+
+            <!-- Standard form handling structural changes asynchronously using pure htmx attributes -->
+            <form th:hx-post="@{/dashboard/tickets/messages/{id}/approve(id=${latestMessage.id})}"
+                  hx-target="#ai-draft-workspace"
+                  hx-swap="outerHTML">
+
+                <textarea name="editedDraftBody"
+                          rows="6"
+                          class="w-full bg-slate-950 border border-slate-700 rounded p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 font-sans tracking-wide leading-relaxed"
+                          th:text="${latestMessage.getAiProposedDraft()}">Loading resolution text draft...</textarea>
+
+                <div class="mt-3 flex justify-end">
+                    <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-mono font-bold rounded shadow transition-all duration-150">
+                        Approve & Despatch Email Response
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Render Success Confirmation Alert Component Block If Operator Has Already Clicked Process Approval Button -->
+        <div th:if="${latestMessage != null and latestMessage.isDraftApproved}" class="p-4 bg-emerald-950/50 border border-emerald-500 text-emerald-400 text-xs font-mono rounded-lg flex items-center gap-2">
+            <span>Execution Successful. Resolution mail dispatched to destination transport network safely. Ticket status shifted to PENDING.</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

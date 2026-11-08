@@ -1,0 +1,28 @@
+# Location: src/main/resources/application.yml
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ai-ticket-crm
+
+  # Database Engine Setup
+  datasource:
+    url: jdbc:postgresql://localhost:5432/
+    username: postgres
+    #username: your_db_user
+    #password: your_db_password
+    password: your_db_password
+    driver-class-name: org.postgresql.Driver
+
+  # JPA / Hibernate Multi-Tenancy Architecture Constraints
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        # Prevent lazy loading exceptions during asymmetric htmx rendering passes
+        default_batch_fetch_size: 20
