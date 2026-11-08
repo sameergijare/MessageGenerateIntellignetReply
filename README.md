@@ -44,11 +44,11 @@ Testing the Endpoints
 Since standard web browsers cannot natively append custom headers to the address bar, use one of the following methods for local development:
 
 Option 1: Using cURL
-    curl -H "X-Tenant-ID: tenant1" http://localhost:8080/index.html
+    curl -H "X-Tenant-ID: tenant1" http://localhost:8080/public/smoketest
 
 Option 2: Using Postman / Insomnia
 
-1. Create a new request to http://localhost:8080/...
+1. Create a new request to http://localhost:8080/public/smoketest
 2. Go to the Headers tab.
 3. Add a new row: Key = X-Tenant-ID, Value = your-tenant-value
 
