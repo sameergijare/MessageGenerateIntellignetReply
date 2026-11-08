@@ -1,17 +1,44 @@
 
 Project Name
 
-A multi-tenant backend application built with Spring Boot, designed to securely isolate data across different organizations or customers (tenants).It generates
-customized reply to Ticket based on Knowledge Bases provided using Ollama Streaming Chat model and quantized embedded model.
+MessageGenerateIntelligentReply is a high-performance, multi-tenant Spring Boot backend application designed to securely handle and isolate intelligent reply generation across different business entities. Data isolation is maintained via dedicated schemas or identifiers within a centralized PostgreSQL database, while completions are processed via a localized LLM runtime.
 
 🚀 Getting Started
+
 
 
 Prerequisites
 
 • Java 17 or higher
-• Maven 
+• Maven or Gradle
+• PostgreSQL instance running locally on the default port
+• Ollama installed locally
 
+
+Dependency Prerequisites & Infrastructure Setup
+
+Before launching the application, ensure both your local database and the open-source inference engine are up and running with the following configurations:
+
+1. PostgreSQL Database
+
+The application requires a PostgreSQL server listening on port 5432.
+• Ensure a database exists for the application context.
+• Update your src/main/resources/application.properties (or application.yml) file with your access credentials:
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/your_database_name
+spring.datasource.username=your_postgres_user
+spring.datasource.password=your_postgres_password
+spring.jpa.hibernate.ddl-auto=update
+
+
+2. Ollama Local LLM Execution Engine
+
+Local language model inference is managed using Ollama. The application specifically expects the qwen2.5:0.5b model variant to be present locally.
+• Download and run the Ollama instance on your machine.
+• Pull and run the model via your terminal prior to bootstrapping the application server
+
+ollama run qwen2.5:0.5b
+• Keep the Ollama service daemon active (typically listening locally on port 11434).
 
 Installation & Running Locally
 
@@ -21,9 +48,13 @@ Installation & Running Locally
 2. Build the application
    # For Maven
    ./mvnw clean package
-3. Run the application
+   # For Gradle
+   ./gradlew clean build
+4. Run the application
    # For Maven
   ./mvnw spring-boot:run
+  # For Gradle
+  ./gradlew bootRun
 
 The server will start on http://localhost:8080.
 
@@ -57,11 +88,15 @@ Option 2: Using Postman / Insomnia
  
  ├── src
 │   ├── main
-│   │   ├── java          # Backend source code
+│   │   ├── java/com/company/intelligentreply     # Core application source code
+│   │   │   ├── config                           # Security & multi-tenant filters
+│   │   │   ├── controller                       # REST Endpoints
+│   │   │   └── service                          # Reply generation engines (Ollama integration)
 │   │   └── resources
-│   │       ├── static    # Static files (index.html, css, js)
-│   │       └── templates # Dynamic views (if applicable)
+│   │       ├── static                           # Web UI assets (index.html, styles, JS)
+│   │       └── application.properties           # Database connections and model settings
 └── pom.xml / build.gradle
+
 
 
 
