@@ -1,17 +1,17 @@
-
 Project Name
 
 MessageGenerateIntelligentReply is a high-performance, multi-tenant Spring Boot backend application designed to securely handle and isolate intelligent reply generation across different business entities. Data isolation is maintained via dedicated schemas or identifiers within a centralized PostgreSQL database, while completions are processed via a localized LLM runtime.
 
 🚀 Getting Started
 
-
-
 Prerequisites
 
 • Java 17 or higher
+
 • Maven or Gradle
+
 • PostgreSQL instance running locally on the default port
+
 • Ollama installed locally
 
 
