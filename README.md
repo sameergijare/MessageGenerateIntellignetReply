@@ -86,9 +86,9 @@ Option 2: Using Postman / Insomnia
  Project Structure
 
  
- ├── src
+├── src
 │   ├── main
-│   │   ├── java/com/company/intelligentreply     # Core application source code
+│   │   ├── java/com/company/intelligentreply    # Core application source code
 │   │   │   ├── config                           # Security & multi-tenant filters
 │   │   │   ├── controller                       # REST Endpoints
 │   │   │   └── service                          # Reply generation engines (Ollama integration)
